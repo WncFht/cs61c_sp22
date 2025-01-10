@@ -3,7 +3,6 @@
 #include <sys/time.h>
 #include <time.h>
 
-
 /* To save you time, we are including all 6 variants of the loop ordering
    as separate functions and then calling them using function pointers.
    The reason for having separate functions that are nearly identical is
@@ -81,10 +80,12 @@ int main( int argc, char **argv ) {
 
     struct timeval start, end;
 
+    srand(time(NULL));  // 在 main 函数开始处初始化随机数种子
+
     /* fill matrices with random numbers */
-    for( i = 0; i < nmax*nmax; i++ ) A[i] = drand48()*2-1;
-    for( i = 0; i < nmax*nmax; i++ ) B[i] = drand48()*2-1;
-    for( i = 0; i < nmax*nmax; i++ ) C[i] = drand48()*2-1;
+    for( i = 0; i < nmax*nmax; i++ ) A[i] = (rand() / (double)RAND_MAX) * 2 - 1;
+    for( i = 0; i < nmax*nmax; i++ ) B[i] = (rand() / (double)RAND_MAX) * 2 - 1;
+    for( i = 0; i < nmax*nmax; i++ ) C[i] = (rand() / (double)RAND_MAX) * 2 - 1;
 
     for( i = 0; i < 6; i++) {
         /* multiply matrices and measure the time */

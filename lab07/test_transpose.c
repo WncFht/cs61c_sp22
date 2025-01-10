@@ -10,9 +10,10 @@ double benchmark(int *A, int *B, int n, int blocksize,
     int i, j;
 
     /* initialize A,B to random integers */
-    srand48( time( NULL ) );
-    for( i = 0; i < n*n; i++ ) A[i] = lrand48( );
-    for( i = 0; i < n*n; i++ ) B[i] = lrand48( );
+    srand(time(NULL));
+    for(i = 0; i < n*n; i++) 
+        A[i] = rand();
+    for(i = 0; i < n*n; i++) B[i] = rand();
 
     /* measure performance */
     struct timeval start, end;
