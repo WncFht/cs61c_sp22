@@ -38,30 +38,48 @@ double benchmark(int *A, int *B, int n, int blocksize,
     return seconds*1e3;
 }
 
-int main( int argc, char **argv ) {
-
-    int n = 12000;
-    int blocksize = 80;
-
-    /* allocate an n*n block of integers for the matrices */
-    int *A = (int*)malloc( n*n*sizeof(int) );
-    int *B = (int*)malloc( n*n*sizeof(int) );
-
-    /* run tests */
-    double time1 = benchmark(A, B, n, blocksize, transpose_naive, "naive transpose");
-    double time2 = benchmark(A, B, n, blocksize, transpose_blocking, "transpose with blocking");
-
-    /* release resources */
-    free( A );
-    free( B );
-
-    printf("testing n = %d, blocksize = %d\n", n, blocksize);
-    printf("naive: %g milliseconds\n", time1);
-    printf("student: %g milliseconds\n", time2);
-    if ((time1 - time2) < 250) {
-        printf("insufficient speedup\n");
-        return -1;
+int main(int argc, char **argv) {
+    printf("=== 实验1：固定 blocksize=20，变化 n ===\n");
+    int test_n[] = {100, 1000, 2000, 5000, 10000};
+    int blocksize = 20;
+    
+    for(int i = 0; i < 5; i++) {
+        int n = test_n[i];
+        int *A = (int*)malloc(n*n*sizeof(int));
+        int *B = (int*)malloc(n*n*sizeof(int));
+        
+        double time1 = benchmark(A, B, n, blocksize, transpose_naive, "naive transpose");
+        double time2 = benchmark(A, B, n, blocksize, transpose_blocking, "transpose with blocking");
+        
+        printf("\nn=%d, blocksize=%d:\n", n, blocksize);
+        printf("naive: %.3f ms\n", time1);
+        printf("blocking: %.3f ms\n", time2);
+        printf("speedup: %.2fx\n", time1/time2);
+        
+        free(A);
+        free(B);
     }
-    printf("Speedup sufficient\n");
+    
+    printf("\n=== 实验2：固定 n=10000，变化 blocksize ===\n");
+    int n = 10000;
+    int test_blocksize[] = {50, 100, 500, 1000, 5000};
+    
+    for(int i = 0; i < 5; i++) {
+        blocksize = test_blocksize[i];
+        int *A = (int*)malloc(n*n*sizeof(int));
+        int *B = (int*)malloc(n*n*sizeof(int));
+        
+        double time1 = benchmark(A, B, n, blocksize, transpose_naive, "naive transpose");
+        double time2 = benchmark(A, B, n, blocksize, transpose_blocking, "transpose with blocking");
+        
+        printf("\nn=%d, blocksize=%d:\n", n, blocksize);
+        printf("naive: %.3f ms\n", time1);
+        printf("blocking: %.3f ms\n", time2);
+        printf("speedup: %.2fx\n", time1/time2);
+        
+        free(A);
+        free(B);
+    }
+    
     return 0;
 }
