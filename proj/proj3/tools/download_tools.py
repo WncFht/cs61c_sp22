@@ -3,6 +3,9 @@ import urllib.request
 import shutil
 import textwrap
 import sys
+import ssl
+
+ssl._create_default_https_context = ssl._create_unverified_context
 
 bufsize = 64 * 1024
 
